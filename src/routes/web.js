@@ -25,6 +25,8 @@ let initWebRoutes = (app) => {
 
     //API endpoints
     router.post(api+"/message",apiController.postMessage);
+    router.get(api+'/message', loginController.checkLoggedIn ,apiController.getAllMessages);
+    router.post(api+'/hash',loginController.hashPassword)
 
     router.post("/logout", loginController.postLogOut);
     return app.use("/", router);

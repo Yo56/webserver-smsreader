@@ -17,7 +17,7 @@ let initPassportLocal = () => {
                         return done(null, false, req.flash("errors", `This user email "${email}" doesn't exist`));
                     }
                     if (user) {
-                        let match = await loginService.comparePasswordUser(password, user);
+                        let match = await loginService.comparePasswordUser(user,password);
                         if (match === true) {
                             return done(null, user, null)
                         } else {

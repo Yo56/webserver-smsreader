@@ -1,3 +1,6 @@
+import OTPService from "../services/OTPService";
+import loginService from "../services/loginService";
+
 let postMessage = (req, res) => {
     console.log("[POST API /message called ]\n>> engineering...");
     //console.log(req)
@@ -16,6 +19,31 @@ let postMessage = (req, res) => {
     return res.sendStatus(200);
 };
 
+let getAllMessages = (req,res) => {
+    try {
+        OTPService.getAllSMS()
+            .then((data)=>{
+                console.log(data);
+                return res.send(data);
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(400).send({
+                    message: err
+                });
+            });
+
+
+
+    } catch (err) {
+        req.flash("errors", err);
+        return res.status(400).send({
+            message: err
+        });
+    }
+}
+
 module.exports = {
     postMessage: postMessage,
+    getAllMessages: getAllMessages
 };

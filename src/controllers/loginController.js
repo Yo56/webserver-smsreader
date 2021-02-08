@@ -48,10 +48,16 @@ let postLogOut = (req, res) => {
     });
 };
 
+let hashPassword = (req, res) =>{
+    let clear = req.body.clearPassword;
+    return res.send(loginService.hashPassword(clear));
+}
+
 module.exports = {
     getPageLogin: getPageLogin,
     handleLogin: handleLogin,
     checkLoggedIn: checkLoggedIn,
     checkLoggedOut: checkLoggedOut,
-    postLogOut: postLogOut
+    postLogOut: postLogOut,
+    hashPassword: hashPassword
 };
