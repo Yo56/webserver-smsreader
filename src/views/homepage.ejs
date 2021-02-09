@@ -81,7 +81,7 @@
     <div class="my-3 p-3 bg-white rounded shadow-sm" id="previous-messages">
         <h6 class="border-bottom pb-2 mb-0">Previous messages</h6>
 
-        <% messages.forEach( message =>{ console.log(message.sender)%>
+        <% messages.forEach( message =>{ %>
 
             <div class="d-flex text-muted pt-3">
                 <img src="images/chat-bubbles-with-ellipsis.ico" width="30" height="30" style="margin-right: 20px"/>
@@ -108,7 +108,6 @@
     let messages = document.getElementById("list-sms");
 
     socket.on('new_sms',function (sms){
-        console.log(sms);
         let div = document.createElement('div');
         div.className = 'd-flex text-muted pt-3';
         div.innerHTML = '<img src="images/chat-bubbles-with-ellipsis.ico" width="30" height="30" style="margin-right: 20px"/>\n'+

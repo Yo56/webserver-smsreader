@@ -1,4 +1,4 @@
-import OTPService from "../services/OTPService";
+import DBService from "../services/DBService";
 import loginService from "../services/loginService";
 
 let postMessage = (req, res) => {
@@ -16,12 +16,21 @@ let postMessage = (req, res) => {
     //emit the event socket.io
     global.io.emit('new_sms', { sender: sender, receiver: receiver, content:content });
 
+    //inserting into DB
+    DBService.saveSMS(sender,receiver,content)
+        .then((response)=>{
+            console.log(response);
+    })
+        .catch(err => {
+            console.log("SMS correctly inserted in DB ? ",err);
+        });
+
     return res.sendStatus(200);
 };
 
 let getAllMessages = (req,res) => {
     try {
-        OTPService.getAllSMS()
+        DBService.getAllSMS()
             .then((data)=>{
                 console.log(data);
                 return res.send(data);
