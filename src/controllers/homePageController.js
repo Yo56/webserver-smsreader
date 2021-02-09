@@ -4,7 +4,7 @@ let handleHelloWorld = async (req, res) => {
     try {
         OTPService.getAllSMS()
             .then((data)=>{
-                //console.log(data);
+                console.log(data);
                 return res.render("homepage.ejs",{
                     messages: data
                 });

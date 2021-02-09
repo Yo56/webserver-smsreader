@@ -7,7 +7,15 @@ let getAllSMS = () => {
                 if (error){
                     reject(error);
                 }
-                resolve(rows);
+                let messages =  rows.map((mysqlObj, index) => {
+                    return Object.assign({}, mysqlObj);
+                });//[];
+                // console.log(rows);
+                // rows.forEach(row => {
+                //     messages.push(row[0]);
+                // });
+                //console.log(messages)
+                resolve(messages);
             })
         }catch (e) {
             reject(e);

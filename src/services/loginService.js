@@ -2,7 +2,6 @@ import connection from "../configs/connectDB";
 import bcrypt from "bcryptjs";
 
 let handleLogin = (email, password) => {
-    console.log("loginservice handleLogin");
     return new Promise(async (resolve, reject) => {
         //check email is exist or not
         let user = await findUserByEmail(email);
@@ -23,7 +22,6 @@ let handleLogin = (email, password) => {
 };
 
 let findUserByEmail = (email) => {
-    console.log("loginservice findUserByEmail",email);
     return new Promise(((resolve, reject) => {
         try{
             connection.query('SELECT * FROM accounts where email = ?',email,function (error, rows) {
@@ -40,9 +38,6 @@ let findUserByEmail = (email) => {
 };
 
 let comparePasswordUser = (user, password) => {
-    console.log("loginservice comparePasswordUser",user,password);
-    console.log("user",user);
-    console.log("password",password);
     return new Promise(async (resolve,reject) => {
         try{
             let isMatch = await bcrypt.compare(password,user.password);
