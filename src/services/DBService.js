@@ -20,9 +20,9 @@ let getAllSMS = () => {
     }));
 };
 
-let saveSMS = (sender,receiver,content) => {
+let saveSMS = (sender,receiver,content,datetime) => {
     let sql = "INSERT INTO sms (datetime, receiver, sender, content) VALUES (?, ?, ?, ?)";
-    var datetime = DATE_FORMATER( new Date(), "yyyy-mm-dd HH:MM:ss" );
+    // var datetime = DATE_FORMATER( new Date(), "yyyy-mm-dd HH:MM:ss" );
     let param = [datetime,receiver,sender,content];
 
     return new Promise( (resolve, reject) => {

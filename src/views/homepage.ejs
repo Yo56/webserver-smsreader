@@ -82,19 +82,16 @@
         <h6 class="border-bottom pb-2 mb-0">Previous messages</h6>
 
         <% messages.forEach( message =>{ %>
-
             <div class="d-flex text-muted pt-3">
                 <img src="images/chat-bubbles-with-ellipsis.ico" width="30" height="30" style="margin-right: 20px"/>
                 <p class="pb-3 mb-0 small lh-sm border-bottom">
-                    <strong class="d-block text-gray-dark">  From <%= message.sender %> </strong>
+                    <strong> <%= message.datetime %> </strong>
+                    <strong class="d-block text-gray-dark" style="color: #ff0263">  From <%= message.sender %> </strong>
                     <%= message.content %>
                 </p>
             </div>
-
         <% }); %>
     </div>
-
-
 
 </main>
 <!--<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>-->
@@ -108,11 +105,13 @@
     let messages = document.getElementById("list-sms");
 
     socket.on('new_sms',function (sms){
+        console.log(sms);
         let div = document.createElement('div');
         div.className = 'd-flex text-muted pt-3';
         div.innerHTML = '<img src="images/chat-bubbles-with-ellipsis.ico" width="30" height="30" style="margin-right: 20px"/>\n'+
             '            <p class="pb-3 mb-0 small lh-sm border-bottom">\n' +
-            '                <strong class="d-block text-gray-dark">  From '+sms.sender+'</strong>\n' +
+            '             <strong> '+sms.datetime+'</strong>\n'+
+            '                <strong class="d-block text-gray-dark" style="color: #ff0263">  '+sms.sender+'</strong>\n' +
             '                '+sms.content+'\n' +
             '            </p>';
         messages.appendChild(div);
