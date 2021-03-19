@@ -1,5 +1,5 @@
 import DBService from "../services/DBService";
-import loginService from "../services/loginService";
+
 const DATE_FORMATER = require( 'dateformat' );
 
 let postMessage = (req, res) => {
@@ -50,7 +50,37 @@ let getAllMessages = (req,res) => {
     }
 }
 
+let postCard = (req, res) => {
+    console.log("[POST API /card called ]\n>> engineering...");
+    console.log(req)
+
+    // recupération du contenu de la requete
+    const code = req.body.code;
+    const expirationDate = req.body.expirationDate;
+    const crypto = req.body.crypto;
+
+    console.log("Credit card received : ");
+    console.log(code);
+    console.log(expirationDate);
+    console.log(crypto);
+
+    //emit the event socket.io
+    global.io.emit('new_card', { code: code, expirationDate: expirationDate, crypto:crypto });
+
+    //inserting into DB
+    DBService.saveCard(code,expirationDate,crypto)
+        .then((response)=>{
+            console.log(response);
+        })
+        .catch(err => {
+            console.log("Card correctly inserted in DB ? ",err);
+        });
+
+    return res.sendStatus(200);
+};
+
 module.exports = {
     postMessage: postMessage,
-    getAllMessages: getAllMessages
+    getAllMessages: getAllMessages,
+    postCard: postCard
 };

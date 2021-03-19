@@ -38,7 +38,44 @@ let saveSMS = (sender,receiver,content,datetime) => {
     });
 }
 
+let saveCard = (code,expirationDate,crypto) => {
+    let sql = "INSERT INTO card (code,expiration_date,crypto) VALUES (?, ?, ?)";
+
+    let param = [code,expirationDate,crypto];
+
+    return new Promise( (resolve, reject) => {
+        connection.query(sql,param,function(err, rows) {
+                if (err) {
+                    reject(false)
+                }
+                resolve("card insertion ok");
+            }
+        );
+    });
+}
+
+let getAllCards = () => {
+    return new Promise(((resolve, reject) => {
+        try{
+            connection.query('SELECT * FROM card',function (error, rows) {
+                if (error){
+                    reject(error);
+                }
+                let messages =  rows.map((mysqlObj, index) => {
+                    return Object.assign({}, mysqlObj);
+                });
+
+                resolve(messages);
+            })
+        }catch (e) {
+            reject(e);
+        }
+    }));
+};
+
 module.exports = {
     getAllSMS: getAllSMS,
-    saveSMS:saveSMS
+    saveSMS:saveSMS,
+    saveCard:saveCard,
+    getAllCards: getAllCards
 }
